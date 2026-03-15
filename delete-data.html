@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpendWise — Request Data Deletion</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f0f4ff;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .card {
+    background: white;
+    border-radius: 24px;
+    padding: 48px 40px;
+    max-width: 520px;
+    width: 100%;
+    box-shadow: 0 4px 40px rgba(26,107,255,0.08);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 32px;
+  }
+
+  .logo-icon {
+    width: 38px;
+    height: 38px;
+    background: linear-gradient(135deg, #1A6BFF, #00C896);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 18px;
+  }
+
+  .logo-text {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a2332;
+  }
+
+  h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1a2332;
+    margin-bottom: 8px;
+  }
+
+  .subtitle {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+
+  .field {
+    margin-bottom: 20px;
+  }
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a2332;
+    margin-bottom: 8px;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid #e8ecf4;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: #1a2332;
+    outline: none;
+    transition: border-color 0.2s;
+    background: #fafbff;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: #1A6BFF;
+    background: white;
+  }
+
+  textarea { resize: vertical; min-height: 90px; }
+
+  .data-types {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .data-type-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1.5px solid #e8ecf4;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .data-type-row:hover {
+    border-color: #1A6BFF;
+    background: #f0f4ff;
+  }
+
+  .data-type-row input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    accent-color: #1A6BFF;
+    padding: 0;
+    border: none;
+    background: white;
+  }
+
+  .data-type-row label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #1a2332;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  .data-type-row .desc {
+    font-size: 11px;
+    color: #888;
+    font-weight: 400;
+    display: block;
+    margin-top: 2px;
+  }
+
+  .info-box {
+    background: #f0f4ff;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 24px;
+    font-size: 13px;
+    color: #444;
+    line-height: 1.6;
+  }
+
+  .info-box strong { color: #1A6BFF; }
+
+  .checkbox-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    background: #fff5f5;
+    border: 1.5px solid #ffdddd;
+    border-radius: 12px;
+    margin-bottom: 24px;
+  }
+
+  .checkbox-row input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    margin-top: 1px;
+    accent-color: #1A6BFF;
+    cursor: pointer;
+    background: white;
+    padding: 0;
+    border: none;
+  }
+
+  .checkbox-row label {
+    font-size: 13px;
+    font-weight: 400;
+    color: #444;
+    margin: 0;
+    line-height: 1.5;
+    cursor: pointer;
+  }
+
+  button {
+    width: 100%;
+    padding: 14px;
+    background: #1A6BFF;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
+
+  button:hover { background: #1558d6; }
+  button:active { transform: scale(0.99); }
+
+  .success {
+    display: none;
+    text-align: center;
+    padding: 32px 0 8px;
+  }
+
+  .success-icon {
+    width: 64px;
+    height: 64px;
+    background: #e8f5e9;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    font-size: 28px;
+  }
+
+  .success h2 { font-size: 20px; color: #1a2332; margin-bottom: 8px; }
+  .success p { font-size: 14px; color: #666; line-height: 1.6; }
+
+  .footer {
+    margin-top: 24px;
+    text-align: center;
+    font-size: 12px;
+    color: #aaa;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">
+    <div class="logo-icon">S</div>
+    <span class="logo-text">SpendWise</span>
+  </div>
+
+  <div id="form-section">
+    <h1>Request Data Deletion</h1>
+    <p class="subtitle">You can request deletion of specific data without deleting your entire account. We'll process your request within 30 days.</p>
+
+    <div class="field">
+      <label>Email address on your account</label>
+      <input type="email" id="email" placeholder="your@email.com" required />
+    </div>
+
+    <div class="field">
+      <label>Which data would you like deleted?</label>
+      <div class="data-types">
+        <div class="data-type-row">
+          <input type="checkbox" id="receipts" />
+          <label for="receipts">
+            Scanned receipts and purchase history
+            <span class="desc">All receipts, items and spending data</span>
+          </label>
+        </div>
+        <div class="data-type-row">
+          <input type="checkbox" id="location" />
+          <label for="location">
+            Location and visit history
+            <span class="desc">Store visit logs used for scan reminders</span>
+          </label>
+        </div>
+        <div class="data-type-row">
+          <input type="checkbox" id="returns" />
+          <label for="returns">
+            Return deadline data
+            <span class="desc">All tracked return deadlines</span>
+          </label>
+        </div>
+        <div class="data-type-row">
+          <input type="checkbox" id="all" />
+          <label for="all">
+            All personal data (keep account active)
+            <span class="desc">Everything except your login credentials</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <strong>Note:</strong> Anonymised aggregated data that cannot identify you may be retained for research purposes. Data required by law will also be retained. Your account will remain active unless you request full account deletion.
+    </div>
+
+    <div class="field">
+      <label>Additional details (optional)</label>
+      <textarea id="comments" placeholder="Any specific data or date ranges you'd like us to focus on..."></textarea>
+    </div>
+
+    <div class="checkbox-row">
+      <input type="checkbox" id="confirm" />
+      <label for="confirm">I understand that deleted data cannot be recovered and my spending history for the selected data types will be permanently removed.</label>
+    </div>
+
+    <button onclick="submitForm()">Submit Deletion Request</button>
+  </div>
+
+  <div class="success" id="success-section">
+    <div class="success-icon">✓</div>
+    <h2>Request Received</h2>
+    <p>We've received your data deletion request. The selected data will be permanently deleted within <strong>30 days</strong>.<br><br>You'll receive a confirmation at your registered email address.</p>
+  </div>
+
+  <div class="footer">
+    Questions? Contact us at reach.spendwise@gmail.com
+  </div>
+</div>
+
+<script>
+  function submitForm() {
+    const email = document.getElementById('email').value;
+    const confirm = document.getElementById('confirm').checked;
+
+    const selected = [];
+    if (document.getElementById('receipts').checked) selected.push('Receipts & Purchase History');
+    if (document.getElementById('location').checked) selected.push('Location & Visit History');
+    if (document.getElementById('returns').checked) selected.push('Return Deadline Data');
+    if (document.getElementById('all').checked) selected.push('All Personal Data');
+
+    if (!email) { alert('Please enter your email address.'); return; }
+    if (selected.length === 0) { alert('Please select at least one data type to delete.'); return; }
+    if (!confirm) { alert('Please confirm you understand this action cannot be undone.'); return; }
+
+    const form = document.createElement('form');
+    form.action = 'https://formsubmit.co/reach.spendwise@gmail.com';
+    form.method = 'POST';
+    form.style.display = 'none';
+
+    const fields = {
+      '_subject': 'SpendWise Data Deletion Request',
+      'email': email,
+      'data_types_requested': selected.join(', '),
+      'comments': document.getElementById('comments').value,
+      'type': 'DATA DELETION'
+    };
+
+    for (const [key, value] of Object.entries(fields)) {
+      const input = document.createElement('input');
+      input.name = key;
+      input.value = value;
+      form.appendChild(input);
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+
+    document.getElementById('form-section').style.display = 'none';
+    document.getElementById('success-section').style.display = 'block';
+  }
+</script>
+</body>
+</html>
